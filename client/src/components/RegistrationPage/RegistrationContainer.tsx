@@ -6,8 +6,8 @@ const RegistrationContainer: React.FC = () => {
   return (
     <Center width={"90%"} height={"90%"}>
       <Flex
-        width={"800px"}
-        height={"600px"}
+        width={{ base: "100%", md: "65%" }}
+        height={"90%"}
         borderRadius={"20px"}
         overflow={"hidden"}
         boxShadow={"-5px -5px 30px 5px red, 5px 5px 30px 5px blue"}

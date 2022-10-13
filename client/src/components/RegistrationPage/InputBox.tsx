@@ -14,7 +14,7 @@ const InputBox: React.FC<InputBoxProps> = ({
     inputPlaceHolder
 }) => {
     return (
-        <FormControl width={"80%"} isRequired>
+        <FormControl width={"85%"} isRequired>
             <FormLabel>{labelName}</FormLabel>
             <Input name={inputName} type={inputType} backgroundColor={"#ADDDD0"} placeholder={inputPlaceHolder}/>
         </FormControl>
