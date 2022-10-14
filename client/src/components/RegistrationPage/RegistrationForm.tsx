@@ -5,12 +5,12 @@ const RegistrationForm: React.FC = () => {
   return (
     <Center
       background={"white"}
-      width={"50%"}
+      width={{base:"100%",md:"50%"}}
       height={"100%"}
       flexDirection={"column"}
       justifyContent={"space-around"}
     >
-      <Heading color={"#224957"}>Welcome to chat app</Heading>
+      <Heading color={"#224957"} fontSize={{md:"1.8rem",lg:"2.2rem"}}>Welcome to chat app</Heading>
       <Center
         flexDirection={"column"}
         width={"90%"}
