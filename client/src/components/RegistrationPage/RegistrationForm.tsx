@@ -8,6 +8,7 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
+import { gql, useQuery } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -21,7 +22,12 @@ type FormValues = {
   repeatPassword: string;
 };
 
+
+
 const RegistrationForm: React.FC = () => {
+  const { loading, error, data } = useQuery(CREATE_USER);
+  console.log(data);
+  
   const { register, handleSubmit } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
@@ -142,7 +148,9 @@ const RegistrationForm: React.FC = () => {
       <Center width={"55%"} justifyContent={"space-evenly"}>
         Already have an account{" "}
         <Link href={"/login"}>
-          <Text color={"blue"} textDecorationLine={"underline"}>Log in</Text>
+          <Text color={"blue"} textDecorationLine={"underline"}>
+            Log in
+          </Text>
         </Link>
       </Center>
       <Center>
@@ -153,7 +161,7 @@ const RegistrationForm: React.FC = () => {
           leftIcon={<FcGoogle />}
         >
           Sign up with google
-         </Button>
+        </Button>
       </Center>
     </Center>
   );
