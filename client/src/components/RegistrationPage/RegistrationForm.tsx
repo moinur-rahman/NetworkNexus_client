@@ -34,7 +34,7 @@ const RegistrationForm: React.FC = () => {
       flexDirection={"column"}
       justifyContent={"space-around"}
     >
-      <Heading color={"#224957"} fontSize={{ md: "1.8rem", lg: "2.2rem" }}>
+      <Heading color={"#224957"} fontSize={{ base: "28px", form: "32px" }}>
         Welcome to chat app
       </Heading>
       <form
@@ -142,11 +142,18 @@ const RegistrationForm: React.FC = () => {
       <Center width={"55%"} justifyContent={"space-evenly"}>
         Already have an account{" "}
         <Link href={"/login"}>
-          <Text color={"blue"}>Log in</Text>
+          <Text color={"blue"} textDecorationLine={"underline"}>Log in</Text>
         </Link>
       </Center>
       <Center>
-        <Button fontSize={"1rem"}><FcGoogle /> <Text marginLeft={"10px"}>Sign up with google</Text> </Button>
+        <Button
+          fontSize={"1rem"}
+          colorScheme={"teal"}
+          variant={"outline"}
+          leftIcon={<FcGoogle />}
+        >
+          Sign up with google
+         </Button>
       </Center>
     </Center>
   );

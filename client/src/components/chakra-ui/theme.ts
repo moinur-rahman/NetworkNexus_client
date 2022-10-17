@@ -6,7 +6,7 @@ const breakpoints = {
   lg: "960px",
   xl: "1200px",
   "2xl": "1536px",
-  form: "900px",
+  form: "1000px",
 };
 
 const theme = extendTheme({ breakpoints });
