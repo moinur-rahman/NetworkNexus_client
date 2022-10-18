@@ -3,17 +3,21 @@ import {
   Button,
   Center,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
   Text,
 } from "@chakra-ui/react";
-import { gql, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { BsFillChatTextFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
+
+import { CREATE_USER } from "../../mutations";
+import { CHECK_DUPLICATE_EMAIL } from "../../queries";
 
 type FormValues = {
   email: string;
@@ -22,15 +26,44 @@ type FormValues = {
   repeatPassword: string;
 };
 
-
-
 const RegistrationForm: React.FC = () => {
-  const { loading, error, data } = useQuery(CREATE_USER);
-  console.log(data);
-  
   const { register, handleSubmit } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+  const [checkDuplicateEmail, duplicateEmailOptions] = useLazyQuery(
+    CHECK_DUPLICATE_EMAIL,
+    {
+      errorPolicy: "all",
+    }
+  );
+
+  const [createUser] = useMutation(CREATE_USER, {
+    errorPolicy: "all",
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = async (
+    { email, name, password },
+    event
+  ) => {
+    event?.preventDefault();
+
+    const result = await checkDuplicateEmail({
+      variables: {
+        email,
+      },
+    });
+    console.log(result.data?.checkDuplicateEmail);
+    
+    if (result.data?.checkDuplicateEmail) {
+      return;
+    }
+    await createUser({
+      variables: {
+        email,
+        name,
+        password,
+      },
+    });
+  };
 
   return (
     <Center
@@ -59,7 +92,11 @@ const RegistrationForm: React.FC = () => {
             flexDirection={"column"}
             justifyContent={"space-between"}
           >
-            <FormControl width={"85%"} isRequired>
+            <FormControl
+              width={"85%"}
+              isRequired
+              isInvalid={duplicateEmailOptions.data?.checkDuplicateEmail}
+            >
               <FormLabel>
                 <Text
                   display={"inline-block"}
@@ -78,6 +115,7 @@ const RegistrationForm: React.FC = () => {
                 backgroundColor={"#ADDDD0"}
                 placeholder={"Enter your email"}
               />
+              <FormErrorMessage>"Email already exits"</FormErrorMessage>
             </FormControl>
             <FormControl width={"85%"} isRequired>
               <FormLabel>
