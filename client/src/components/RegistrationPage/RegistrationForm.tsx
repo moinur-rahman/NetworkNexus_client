@@ -19,26 +19,40 @@ import { FcGoogle } from "react-icons/fc";
 import { CREATE_USER } from "../../mutations";
 import { CHECK_DUPLICATE_EMAIL } from "../../queries";
 
-type FormValues = {
+interface FormValues {
   email: string;
   name: string;
   password: string;
   repeatPassword: string;
-};
+}
+
+interface UserData {
+  email: string;
+  name: string;
+  password: string;
+}
 
 const RegistrationForm: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
+  const watchPassword = watch("password");
+  const watchRepeatPassword = watch("repeatPassword");
+  const touchPassword = formState.touchedFields.password;
+  const touchRepeatPassword = formState.touchedFields.repeatPassword;
 
-  const [checkDuplicateEmail, duplicateEmailOptions] = useLazyQuery(
-    CHECK_DUPLICATE_EMAIL,
+  const [checkDuplicateEmail, duplicateEmailOptions] = useLazyQuery<
+    { checkDuplicateEmail: boolean },
+    { email: string }
+  >(CHECK_DUPLICATE_EMAIL, {
+    errorPolicy: "all",
+    fetchPolicy: "cache-and-network",
+  });
+
+  const [createUser] = useMutation<{ createUser: UserData }, UserData>(
+    CREATE_USER,
     {
       errorPolicy: "all",
     }
   );
-
-  const [createUser] = useMutation(CREATE_USER, {
-    errorPolicy: "all",
-  });
 
   const onSubmit: SubmitHandler<FormValues> = async (
     { email, name, password },
@@ -46,13 +60,16 @@ const RegistrationForm: React.FC = () => {
   ) => {
     event?.preventDefault();
 
+    if (watchPassword != watchRepeatPassword) {
+      return;
+    }
+
     const result = await checkDuplicateEmail({
       variables: {
         email,
       },
     });
-    console.log(result.data?.checkDuplicateEmail);
-    
+
     if (result.data?.checkDuplicateEmail) {
       return;
     }
@@ -137,7 +154,11 @@ const RegistrationForm: React.FC = () => {
                 placeholder={"Enter your user name"}
               />
             </FormControl>
-            <FormControl width={"85%"} isRequired>
+            <FormControl
+              width={"85%"}
+              isRequired
+              isInvalid={touchPassword && watchPassword?.length < 6}
+            >
               <FormLabel>
                 <Text
                   display={"inline-block"}
@@ -156,8 +177,19 @@ const RegistrationForm: React.FC = () => {
                 backgroundColor={"#ADDDD0"}
                 placeholder={"Enter your password"}
               />
+              <FormErrorMessage>
+                password should be minimum 6 characters
+              </FormErrorMessage>
             </FormControl>
-            <FormControl width={"85%"} isRequired>
+            <FormControl
+              width={"85%"}
+              isRequired
+              isInvalid={
+                touchPassword &&
+                touchRepeatPassword &&
+                watchPassword != watchRepeatPassword
+              }
+            >
               <FormLabel>
                 <Text
                   display={"inline-block"}
@@ -176,6 +208,7 @@ const RegistrationForm: React.FC = () => {
                 backgroundColor={"#ADDDD0"}
                 placeholder={"Enter your password again"}
               />
+              <FormErrorMessage>Password do not match</FormErrorMessage>
             </FormControl>
           </Center>
           <Button colorScheme={"teal"} type="submit">
