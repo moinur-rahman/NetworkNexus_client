@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { useState } from "react";
 import {
+  Box,
   Button,
   Center,
   FormControl,
@@ -14,6 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { BsFillChatTextFill } from "react-icons/bs";
+import { BiShow, BiHide } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 
 import { CREATE_USER } from "../../mutations";
@@ -33,12 +36,18 @@ interface UserData {
 }
 
 const RegistrationForm: React.FC = () => {
+  /************* react hook *************/
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
+
+  /*********** react hook form *************/
   const { register, handleSubmit, watch, formState } = useForm<FormValues>();
   const watchPassword = watch("password");
   const watchRepeatPassword = watch("repeatPassword");
   const touchPassword = formState.touchedFields.password;
   const touchRepeatPassword = formState.touchedFields.repeatPassword;
 
+  /*********** apollo client ************/
   const [checkDuplicateEmail, duplicateEmailOptions] = useLazyQuery<
     { checkDuplicateEmail: boolean },
     { email: string }
@@ -53,6 +62,14 @@ const RegistrationForm: React.FC = () => {
       errorPolicy: "all",
     }
   );
+
+  /*************************** Event Handler *****************************/
+  const onPasswordShowIconClick = () => {
+    setShowPassword(!showPassword);
+  };
+  const onRepeatPasswordShowIconClick = () => {
+    setShowRepeatPassword(!showRepeatPassword);
+  };
 
   const onSubmit: SubmitHandler<FormValues> = async (
     { email, name, password },
@@ -171,12 +188,28 @@ const RegistrationForm: React.FC = () => {
                   Password
                 </Text>
               </FormLabel>
-              <Input
-                {...register("password")}
-                type={"password"}
-                backgroundColor={"#ADDDD0"}
-                placeholder={"Enter your password"}
-              />
+              <Box position={"relative"} width={"100%"}>
+                <Input
+                  {...register("password")}
+                  type={showPassword ? "text" : "password"}
+                  backgroundColor={"#ADDDD0"}
+                  placeholder={"Enter your password"}
+                  width={"100%"}
+                />
+                <Text
+                  fontSize={"20px"}
+                  position={"absolute"}
+                  top={"50%"}
+                  left={"100%"}
+                  transform={"translate(-160%, -50%)"}
+                  cursor={"pointer"}
+                  onClick={onPasswordShowIconClick}
+                  zIndex={1}
+                >
+                  {showPassword ? <BiShow /> : <BiHide />}
+                </Text>
+              </Box>
+
               <FormErrorMessage>
                 password should be minimum 6 characters
               </FormErrorMessage>
@@ -202,12 +235,28 @@ const RegistrationForm: React.FC = () => {
                   Repeat Password
                 </Text>
               </FormLabel>
-              <Input
-                {...register("repeatPassword")}
-                type={"password"}
-                backgroundColor={"#ADDDD0"}
-                placeholder={"Enter your password again"}
-              />
+              <Box position={"relative"} width={"100%"}>
+                <Input
+                  {...register("repeatPassword")}
+                  type={showRepeatPassword ? "text" : "password"}
+                  backgroundColor={"#ADDDD0"}
+                  placeholder={"Enter your password again"}
+                  width={"100%"}
+                />
+                <Text
+                  fontSize={"20px"}
+                  position={"absolute"}
+                  top={"50%"}
+                  left={"100%"}
+                  transform={"translate(-140%, -50%)"}
+                  cursor={"pointer"}
+                  onClick={onRepeatPasswordShowIconClick}
+                  zIndex={1}
+                >
+                  {showRepeatPassword ? <BiShow /> : <BiHide />}
+                </Text>
+              </Box>
+
               <FormErrorMessage>Password do not match</FormErrorMessage>
             </FormControl>
           </Center>
