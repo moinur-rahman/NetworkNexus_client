@@ -265,10 +265,14 @@ const RegistrationForm: React.FC = () => {
           </Button>
         </Center>
       </form>
-      <Center width={"55%"} justifyContent={"space-evenly"}>
-        Already have an account{" "}
+      <Center width={"250px"} justifyContent={"space-evenly"}>
+        <Text whiteSpace={"nowrap"}>Already have an account?</Text>
         <Link href={"/login"}>
-          <Text color={"blue"} textDecorationLine={"underline"}>
+          <Text
+            color={"blue"}
+            textDecorationLine={"underline"}
+            whiteSpace={"nowrap"}
+          >
             Log in
           </Text>
         </Link>
