@@ -108,7 +108,7 @@ const RegistrationForm: React.FC = () => {
       justifyContent={"space-around"}
     >
       <Heading color={"#224957"} fontSize={{ base: "28px", form: "32px" }}>
-        Welcome to chat app
+        Welcome to NetworkNexus
       </Heading>
       <form
         style={{ height: "70%", width: "100%" }}
@@ -149,7 +149,7 @@ const RegistrationForm: React.FC = () => {
                 backgroundColor={"#ADDDD0"}
                 placeholder={"Enter your email"}
               />
-              <FormErrorMessage>"Email already exits"</FormErrorMessage>
+              <FormErrorMessage>Email already exits</FormErrorMessage>
             </FormControl>
             <FormControl width={"85%"} isRequired>
               <FormLabel>

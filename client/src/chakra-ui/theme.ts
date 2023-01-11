@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
+import "@fontsource/roboto";
 
 const breakpoints = {
   sm: "320px",
@@ -9,6 +10,11 @@ const breakpoints = {
   form: "1000px",
 };
 
-const theme = extendTheme({ breakpoints });
+const fonts = {
+  heading: `'Roboto', sans-serif`,
+  body: `'Roboto', sans-serif`,
+};
+
+const theme = extendTheme({ breakpoints,fonts });
 
 export default theme;

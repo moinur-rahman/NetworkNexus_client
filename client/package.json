@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "NetworkNexus-client",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.4.6",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
     "framer-motion": "^8.4.0",
     "graphql": "^16.6.0",
     "next": "^13.1.1",
