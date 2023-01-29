@@ -107,7 +107,7 @@ const RegistrationForm: React.FC = () => {
       flexDirection={"column"}
       justifyContent={"space-around"}
     >
-      <Heading color={"#224957"} fontSize={{ base: "28px", form: "32px" }}>
+      <Heading color={"#224957"} fontSize={{ base: "28px", form: "30px" }}>
         Welcome to NetworkNexus
       </Heading>
       <form
